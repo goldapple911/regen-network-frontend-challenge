@@ -7,7 +7,7 @@ export interface IProps {
 }
 
 const Layout = ({ children }: IProps): JSX.Element => {
-  return <div className="App-wrapper vh-100 d-flex justify-content-center">{children}</div>;
+  return <div className="App-wrapper">{children}</div>;
 };
 
 export default Layout;
