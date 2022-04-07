@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-function App() {
+import 'bootstrap/scss/bootstrap.scss';
+
+import Layout from './containers/Layout';
+import NotFound from './containers/NotFound';
+import ListBlocks from './pages/Blocks/ListBlocks';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Layout>
+        <Router>
+          <Routes>
+            <Route path="/blocks" element={<ListBlocks />} />
+            <Route path="/" element={<Navigate replace to="/blocks" />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </Layout>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
